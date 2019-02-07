@@ -15,29 +15,6 @@ else:
     keyboard_input = input
 
 
-def mark_command(cmd_string, alias):
-    ''' Adding a new Mark '''
-    if cmd_string:
-        cmd_string = cmd_string.strip()
-    if not cmd_string:
-        cmd_string = keyboard_input("Line:")
-    else:
-        print("command: %s" % cmd_string)
-    if not cmd_string:
-        print ("command field is required")
-        return
-    if not alias:
-        alias = keyboard_input("Alias?:")
-    else:
-        print("alias: %s" % alias)
-    if '##' in cmd_string or '##' in alias:
-        # ## isn't allowed since it's used as seperator
-        print ("command can't contain ##(it's used as command alias seperator)")
-        return
-    commands = command.load(get_user_marks_path())
-    command.add(commands, command.Line(cmd_string, alias))
-    command.save(commands, get_user_marks_path())
-
 def pick(search, options):
     commands = [command.Line(opt, '') for opt in options]
     state = State(commands, search)
@@ -51,36 +28,6 @@ def pick(search, options):
         return state.input
     return output.cmd
 
-
-def get_selected_command_or_input(search):
-    ''' Display an interactive UI interface where the user can type and select commands
-        this function returns the selected command if there is matches or the written characters in the prompt line if no matches are present
-    '''
-    commands = command.load(get_user_marks_path()) + command.load(get_tldr_os_marks_path()) + command.load(get_tldr_common_marks_path())
-    state = State(commands, search)
-    # draw the screen (prompt + matchd marks)
-    renderer.refresh(state)
-    # wait for user input(returns selected mark)
-    output = read_line(state)
-    # clear the screen
-    renderer.erase()
-    if not output:
-        return state.input
-    return output.cmd
-
-
-def remove_command(search):
-    ''' Remove a command interactively '''
-    commands = command.load(get_user_marks_path())
-    state = State(commands, search)
-    renderer.refresh(state)
-    selected_mark = read_line(state)
-    if selected_mark:
-        command.remove(commands, selected_mark)
-        command.save(commands, get_user_marks_path())
-    # clear the screen
-    renderer.erase()
-    return selected_mark
 
 def read_line(state):
     ''' parse user input '''

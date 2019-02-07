@@ -6,7 +6,9 @@ import os
 from . import keys
 
 def get_symbol():
-    ''' Read a symbol, which can be a single byte character or a multibyte string'''
+    '''
+    Read a symbol, which can be a single byte character or a multibyte string
+    '''
     ch = read_char()
     ch_code = ord(ch)
     # check for multibyte string
@@ -43,7 +45,10 @@ def read_char():
 
 
 def read_char_no_blocking():
-    ''' Read a character in nonblocking mode, if no characters are present in the buffer, return an empty string '''
+    '''
+    Read a character in nonblocking mode, if no characters are present in the
+    buffer, return an empty string
+    '''
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     old_flags = fcntl.fcntl(fd, fcntl.F_GETFL)
@@ -53,7 +58,8 @@ def read_char_no_blocking():
         return sys.stdin.read(1)
     except IOError as e:
         ErrorNumber = e[0]
-        # IOError with ErrorNumber 11(35 in Mac)  is thrown when there is nothing to read(Resource temporarily unavailable)
+        # IOError with ErrorNumber 11(35 in Mac)  is thrown when there is
+        # nothing to read(Resource temporarily unavailable)
         if (sys.platform.startswith("linux") and ErrorNumber != 11) or (sys.platform == "darwin" and ErrorNumber != 35):
             raise
         return ""

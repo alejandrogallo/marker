@@ -18,14 +18,17 @@ def unicode_length(string):
         return len(string)
 
 def erase():
-    ''' the commandline cursor is always at the first line (Marker prompt)
+    '''
+    The commandline cursor is always at the first line (Marker prompt)
     Therefore, erasing the current and following lines clear all marker output
     '''
     ansi.move_cursor_line_beggining()
     ansi.erase_from_cursor_to_end()
 
 def refresh(state):
-    ''' Redraw the output, this function will be triggered on every user interaction(key pressed)'''
+    '''
+    Redraw the output, this function will be triggered on every user interaction(key pressed)
+    '''
     erase()
     lines, num_rows = _construct_output(state)
     for line in lines[:-1]:
