@@ -1,7 +1,7 @@
 from . import ansi
 
 class Line(object):
-    '''A Line is composed of the shell command string and an optionnal alias'''
+    '''A Line is composed of the shell line string and an optionnal alias'''
     def __init__(self, header, index):
         self.header = header
         self.index = index

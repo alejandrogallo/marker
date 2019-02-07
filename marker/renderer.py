@@ -8,7 +8,7 @@ import sys
 def _get_terminal_columns():
     ''' get the number of terminal columns, used to determine spanned lines of a mark(required for cursor placement) '''
     rows, columns = os.popen('stty size', 'r').read().split()
-    # the -1 is to keep the command prompt displayed
+    # the -1 is to keep the line prompt displayed
     return int(rows) - 1, int(columns)
 
 def unicode_length(string):
@@ -19,7 +19,7 @@ def unicode_length(string):
 
 def erase():
     '''
-    The commandline cursor is always at the first line (Marker prompt)
+    The lineline cursor is always at the first line (Marker prompt)
     Therefore, erasing the current and following lines clear all marker output
     '''
     ansi.move_cursor_line_beggining()
@@ -56,12 +56,12 @@ def _construct_output(state):
     num_rows += number_of_rows(prompt_line)
     matches = state.get_matches()
     if matches:
-        # display commands from Max(0,selected_command_index - 10 +1 ) to Max(10,SelectedLineIndex + 1)
-        selected_command_index = matches.index(state.get_selected_match())
+        # display lines from Max(0,selected_line_index - 10 +1 ) to Max(10,SelectedLineIndex + 1)
+        selected_line_index = matches.index(state.get_selected_match())
         num_results = 10
         matches_to_display = []
         while (True):
-            filtered_matches = matches[max(0, selected_command_index - num_results + 1):max(num_results, selected_command_index + 1)]
+            filtered_matches = matches[max(0, selected_line_index - num_results + 1):max(num_results, selected_line_index + 1)]
             filtered_matches_rows = sum(number_of_rows(' ' + str(el)) for el in filtered_matches)
             if rows - num_rows < filtered_matches_rows:
                 num_results -= 1
@@ -75,7 +75,7 @@ def _construct_output(state):
             for w in state.input.split(' '):
                 if w:
                     fm = fm.replace(w, ansi.bold_text(w))
-            # highlighting selected command
+            # highlighting selected line
             if m == state.get_selected_match():
                 fm = ansi.select_text(fm)
             displayed_lines.append(fm)

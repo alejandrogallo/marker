@@ -1,11 +1,11 @@
 from . import string_score
 import re
 
-def filter_commands(marks, search_string):
+def filter_lines(marks, search_string):
     ''' return the list of marks that match a given search string
      A mark is considered a match if:
-       - all words in the search string except the last one must have exact match, meaning they are present in either the command or the alias
-       - for the last word, it can be contained in any word in the command or alias
+       - all words in the search string except the last one must have exact match, meaning they are present in either the line or the alias
+       - for the last word, it can be contained in any word in the line or alias
      For example: 'cd tonowhere' will match 'c','cd n' but not 'c ', 'c t'
     '''
     def sort_marks(marks, search_string):

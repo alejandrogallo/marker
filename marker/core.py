@@ -3,9 +3,9 @@ from __future__ import print_function
 import os
 from . import keys
 from . import readchar
-from . import command
+from . import line
 from . import renderer
-from .filter import filter_commands
+from .filter import filter_lines
 
 from sys import version_info, platform
 
@@ -16,8 +16,8 @@ else:
 
 
 def pick(search, options):
-    commands = [command.Line(opt, str(i)) for i, opt in enumerate(options)]
-    state = State(commands, search)
+    lines = [line.Line(opt, str(i)) for i, opt in enumerate(options)]
+    state = State(lines, search)
     # draw the screen (prompt + matchd marks)
     renderer.refresh(state)
     # wait for user input(returns selected mark)
@@ -56,11 +56,11 @@ def read_line(state):
     return output
 
 class State(object):
-    ''' The app State, including user written characters, matched commands, and selected one '''
+    ''' The app State, including user written characters, matched lines, and selected one '''
 
     def __init__(self, bookmarks, default_input):
         self.bookmarks = bookmarks
-        self._selected_command_index = 0
+        self._selected_line_index = 0
         self.matches = []
         self.default_input = default_input
         self.set_input(default_input)
@@ -79,20 +79,20 @@ class State(object):
         self.set_input("")
 
     def clear_selection(self):
-        self._selected_command_index = 0
+        self._selected_line_index = 0
 
     def select_next(self):
-        self._selected_command_index = (self._selected_command_index + 1) % len(self.matches) if len(self.matches) else 0
+        self._selected_line_index = (self._selected_line_index + 1) % len(self.matches) if len(self.matches) else 0
 
     def select_previous(self):
-        self._selected_command_index = (self._selected_command_index - 1) % len(self.matches) if len(self.matches) else 0
+        self._selected_line_index = (self._selected_line_index - 1) % len(self.matches) if len(self.matches) else 0
 
     def _update(self):
-        self.matches = filter_commands(self.bookmarks, self.input)
-        self._selected_command_index = 0
+        self.matches = filter_lines(self.bookmarks, self.input)
+        self._selected_line_index = 0
 
     def get_selected_match(self):
         if len(self.matches):
-            return self.matches[self._selected_command_index]
+            return self.matches[self._selected_line_index]
         else:
             raise 'No matches found'
