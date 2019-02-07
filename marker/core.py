@@ -49,10 +49,24 @@ def mark_command(cmd_string, alias):
     if '##' in cmd_string or '##' in alias:
         # ## isn't allowed since it's used as seperator
         print ("command can't contain ##(it's used as command alias seperator)")
-        return        
+        return
     commands = command.load(get_user_marks_path())
     command.add(commands, command.Command(cmd_string, alias))
     command.save(commands, get_user_marks_path())
+
+def pick(search, options):
+    commands = [command.Command(opt, '') for opt in options]
+    state = State(commands, search)
+    # draw the screen (prompt + matchd marks)
+    renderer.refresh(state)
+    # wait for user input(returns selected mark)
+    output = read_line(state)
+    # clear the screen
+    renderer.erase()
+    if not output:
+        return state.input
+    return output.cmd
+
 
 def get_selected_command_or_input(search):
     ''' Display an interactive UI interface where the user can type and select commands
