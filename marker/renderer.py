@@ -3,7 +3,7 @@ from . import ansi
 import re
 import math
 import sys
-'''Command line user interface'''
+'''Line line user interface'''
 
 def _get_terminal_columns():
     ''' get the number of terminal columns, used to determine spanned lines of a mark(required for cursor placement) '''
@@ -53,7 +53,7 @@ def _construct_output(state):
     num_rows += number_of_rows(prompt_line)
     matches = state.get_matches()
     if matches:
-        # display commands from Max(0,selected_command_index - 10 +1 ) to Max(10,SelectedCommandIndex + 1)
+        # display commands from Max(0,selected_command_index - 10 +1 ) to Max(10,SelectedLineIndex + 1)
         selected_command_index = matches.index(state.get_selected_match())
         num_results = 10
         matches_to_display = []

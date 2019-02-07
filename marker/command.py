@@ -4,7 +4,7 @@ def load(filePath):
     lines = []
     try:
         with open(filePath, 'r') as f:
-            lines = [Command.deserialize(l.strip('\n').strip('\r')) for l in f.readlines() if l]
+            lines = [Line.deserialize(l.strip('\n').strip('\r')) for l in f.readlines() if l]
     except:
         pass
     return lines
@@ -24,8 +24,8 @@ def remove(commands, command):
     except StopIteration:
         pass
 
-class Command(object):
-    '''A Command is composed of the shell command string and an optionnal alias'''
+class Line(object):
+    '''A Line is composed of the shell command string and an optionnal alias'''
     def __init__(self, cmd, alias):
         if not cmd:
             raise "empty command argument"
@@ -48,7 +48,7 @@ class Command(object):
         else:
             cmd = str
             alias = ""
-        return Command(cmd, alias)
+        return Line(cmd, alias)
 
     def serialize(self):
         if self.alias:

@@ -20,7 +20,7 @@ def mark_command(cmd_string, alias):
     if cmd_string:
         cmd_string = cmd_string.strip()
     if not cmd_string:
-        cmd_string = keyboard_input("Command:")
+        cmd_string = keyboard_input("Line:")
     else:
         print("command: %s" % cmd_string)
     if not cmd_string:
@@ -35,11 +35,11 @@ def mark_command(cmd_string, alias):
         print ("command can't contain ##(it's used as command alias seperator)")
         return
     commands = command.load(get_user_marks_path())
-    command.add(commands, command.Command(cmd_string, alias))
+    command.add(commands, command.Line(cmd_string, alias))
     command.save(commands, get_user_marks_path())
 
 def pick(search, options):
-    commands = [command.Command(opt, '') for opt in options]
+    commands = [command.Line(opt, '') for opt in options]
     state = State(commands, search)
     # draw the screen (prompt + matchd marks)
     renderer.refresh(state)
