@@ -39,7 +39,7 @@ def refresh(state):
     # go up
     ansi.move_cursor_previous_lines(num_rows - 1)
     # palce the cursor at the end of first line
-    ansi.move_cursor_horizental(len(lines[0])+1)
+    ansi.move_cursor_horizontal(len(lines[0])+1)
     ansi.flush()
 
 def _construct_output(state):

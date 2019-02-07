@@ -20,7 +20,7 @@ def get_formattings(text):
             text[text.index(CLEAR_FORMATTING)+len(CLEAR_FORMATTING):]
         )
     return ''.join([
-        s for s in [BOLD, FOREGROUND_GREY, FOREGROUND_BLACK, BACKGROUND_WHITE]
+        s for s in [BOLD, FOREGROUND_BLACK, BACKGROUND_WHITE]
         if s in text
     ])
 

@@ -2,7 +2,7 @@ CTRL_C = 3
 ENTER = 13
 CTRL_U = 21
 ESC = 27
-BACKSPACE =
+BACKSPACE = 127
 TAB = 9
 
 # FAKE CODE to abstract away the fact that a multibyte string is needed to
