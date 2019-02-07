@@ -16,7 +16,7 @@ else:
 
 
 def pick(search, options):
-    commands = [command.Line(opt, '') for opt in options]
+    commands = [command.Line(opt, str(i)) for i, opt in enumerate(options)]
     state = State(commands, search)
     # draw the screen (prompt + matchd marks)
     renderer.refresh(state)
@@ -26,7 +26,8 @@ def pick(search, options):
     renderer.erase()
     if not output:
         return state.input
-    return output.cmd
+    print(output)
+    return output.header
 
 
 def read_line(state):
