@@ -14,22 +14,6 @@ if version_info[0] == 2:
 else:
     keyboard_input = input
 
-def get_os():
-    if platform.lower() == 'darwin':
-        return 'osx'
-    elif platform.lower().startswith('linux'):
-        return 'linux'
-    else:
-        # throw is better
-        return 'unknown'
-
-def get_user_marks_path():
-    return os.path.join(os.getenv('MARKER_DATA_HOME'), 'user_commands.txt')
-def get_tldr_os_marks_path():
-    return os.path.join(os.getenv('MARKER_HOME'), 'tldr', get_os()+'.txt')
-def get_tldr_common_marks_path():
-    return os.path.join(os.getenv('MARKER_HOME'), 'tldr', 'common.txt')
-
 
 def mark_command(cmd_string, alias):
     ''' Adding a new Mark '''
