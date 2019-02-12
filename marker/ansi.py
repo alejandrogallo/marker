@@ -1,18 +1,17 @@
 import sys
+import marker.ansilib
+# Compatibility for ansilib
+sys.modules["ansi"] = marker.ansilib
+from marker.ansilib.colour import fg, bg
+import marker.ansilib.cursor as cursor
 
-BOLD = "\x1b[1m"
-CLEAR_FORMATTING = "\x1b[0m"
-ERASE_SCREEN = "\x1b[J"
-ERASE_LINE = "\x1b[2K"
-FOREGROUND_BLACK = "\x1b[30m"
-BACKGROUND_WHITE = "\x1b[47m"
+BOLD = str(fg.yellow)
+CLEAR_FORMATTING = str(fg.default + bg.default)
 
-def _CURSOR_COLUMN(pos):
-    return "\x1b["+str(pos)+"G"
+FOREGROUND_BLACK = str(fg.black)
+BACKGROUND_WHITE = str(bg.red)
+SELECT_TEXT_STYLE = str(bg.red + fg.black)
 
-
-def _CURSOR_PREVIOUS_LINES(number):
-    return "\x1b["+str(number)+"F"
 
 def get_formattings(text):
     if CLEAR_FORMATTING in text:
@@ -26,14 +25,9 @@ def get_formattings(text):
 
 def select_text(text):
     return  (
-        FOREGROUND_BLACK +
-        BACKGROUND_WHITE +
-        text.replace(
-            CLEAR_FORMATTING,
-            CLEAR_FORMATTING + FOREGROUND_BLACK + BACKGROUND_WHITE
-        ) +
-        CLEAR_FORMATTING +
-        get_formattings(text)
+        SELECT_TEXT_STYLE +
+        text +
+        CLEAR_FORMATTING
     )
 
 
@@ -49,24 +43,24 @@ def bold_text(text):
     )
 
 
-def move_cursor_line_beggining():
-    sys.stdout.write(_CURSOR_COLUMN(0))
-
-
 def move_cursor_horizontal(n):
-    sys.stdout.write(_CURSOR_COLUMN(n))
+    sys.stdout.write(cursor.goto(n))
+
+
+def move_cursor_line_beggining():
+    move_cursor_horizontal(0)
 
 
 def move_cursor_previous_lines(number_of_lines):
-    sys.stdout.write(_CURSOR_PREVIOUS_LINES(number_of_lines))
+    sys.stdout.write(number_of_lines * cursor.prev_line())
 
 
 def erase_from_cursor_to_end():
-    sys.stdout.write(ERASE_SCREEN)
+    sys.stdout.write(cursor.erase())
 
 
 def erase_line():
-    sys.stdout.write(ERASE_LINE)
+    sys.stdout.write(cursor.erase_line())
 
 
 def flush():

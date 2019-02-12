@@ -20,6 +20,7 @@ def read_line(state):
     output = None
     while True:
         c = readchar.get_symbol()
+        #print(c)
         if c == keys.ENTER:
             if state.get_matches():
                 output = state.get_selected_match()
@@ -41,7 +42,10 @@ def read_line(state):
     return output
 
 class State(object):
-    ''' The app State, including user written characters, matched lines, and selected one '''
+    '''
+    The app State, including user written characters, matched lines, and
+    selected one
+    '''
 
     def __init__(self, bookmarks, default_input):
         self.bookmarks = bookmarks
